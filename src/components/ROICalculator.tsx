@@ -33,6 +33,7 @@ const ROICalculator = () => {
   const [cr, setCr] = useState(1.5);
   const [dailyOrders, setDailyOrders] = useState(27);
   const [currentVisibility, setCurrentVisibility] = useState(33);
+  const [showQuote, setShowQuote] = useState(false);
 
   const PROGRAM_COST = 5550; // $1,850 × 3
   const RAMP_MONTHS = 3;
@@ -51,23 +52,26 @@ const ROICalculator = () => {
     };
   }, [visitorsToday, currentVisibility]);
 
-  const calculateScenario = (targetVisibility: number): ScenarioResult => {
-    const visitorsPerDay = calculateVisitors(targetVisibility);
-    const extraVisitorsPerMonth = (visitorsPerDay - visitorsToday) * 30;
-    const ordersPerMonth = visitorsPerDay * 30 * (cr / 100);
-    const extraOrdersPerMonth = ordersPerMonth - ordersToday;
-    const extraRevenuePerMonth = extraOrdersPerMonth * aov;
+  const calculateScenario = useMemo(() => {
+    return (targetVisibility: number): ScenarioResult => {
+      const visitorsPerDay = calculateVisitors(targetVisibility);
+      const extraVisitorsPerMonth = (visitorsPerDay - visitorsToday) * 30;
+      const ordersPerMonth = visitorsPerDay * 30 * (cr / 100);
+      const extraOrdersPerMonth = ordersPerMonth - ordersToday;
+      const extraRevenuePerMonth = extraOrdersPerMonth * aov;
 
-    return {
-      targetVisibility,
-      visitorsPerDay,
-      extraVisitorsPerMonth,
-      extraOrdersPerMonth,
-      extraRevenuePerMonth,
+      return {
+        targetVisibility,
+        visitorsPerDay,
+        extraVisitorsPerMonth,
+        extraOrdersPerMonth,
+        extraRevenuePerMonth,
+      };
     };
-  };
+  }, [calculateVisitors, visitorsToday, cr, ordersToday, aov]);
 
-  const calculateRamp = (targetVisibility: number): RampResult => {
+  const calculateRamp = useMemo(() => {
+    return (targetVisibility: number): RampResult => {
     const months: MonthData[] = [];
     let cumulativeRevenue = 0;
 
@@ -108,20 +112,21 @@ const ROICalculator = () => {
       }
     }
 
-    return {
-      months,
-      totalExtraRevenue: cumulativeRevenue,
-      paybackDays,
+      return {
+        months,
+        totalExtraRevenue: cumulativeRevenue,
+        paybackDays,
+      };
     };
-  };
+  }, [calculateVisitors, visitorsToday, cr, ordersToday, aov, PROGRAM_COST, RAMP_MONTHS]);
 
-  const conservative = calculateScenario(50);
-  const baseline = calculateScenario(65);
-  const aggressive = calculateScenario(75);
+  const conservative = useMemo(() => calculateScenario(50), [calculateScenario]);
+  const baseline = useMemo(() => calculateScenario(65), [calculateScenario]);
+  const aggressive = useMemo(() => calculateScenario(75), [calculateScenario]);
 
-  const conservativeRamp = calculateRamp(50);
-  const baselineRamp = calculateRamp(65);
-  const aggressiveRamp = calculateRamp(75);
+  const conservativeRamp = useMemo(() => calculateRamp(50), [calculateRamp]);
+  const baselineRamp = useMemo(() => calculateRamp(65), [calculateRamp]);
+  const aggressiveRamp = useMemo(() => calculateRamp(75), [calculateRamp]);
 
   const formatNumber = (num: number) => Math.round(num).toLocaleString();
   const formatCurrency = (num: number) => `$${Math.round(num).toLocaleString()}`;
@@ -427,44 +432,53 @@ const ROICalculator = () => {
         <Card className="border-2 border-primary bg-gradient-to-br from-background to-muted/30 p-8">
           <div className="text-center">
             <h2 className="mb-4 text-3xl font-bold">Get Quote</h2>
-            <p className="mb-6 text-lg text-muted-foreground">
-              We aim for the Aggressive target. We offer one plan and one quote.
-            </p>
-            <p className="mb-2 text-sm font-medium text-muted-foreground">
-              Best results with the 3-month plan.
-            </p>
+            
+            {!showQuote ? (
+              <>
+                <p className="mb-6 text-lg text-muted-foreground">
+                  We aim for the Aggressive target. We offer one plan and one quote.
+                </p>
+                <Button size="lg" className="text-lg font-semibold" onClick={() => setShowQuote(true)}>
+                  Get Quote
+                </Button>
+              </>
+            ) : (
+              <>
+                <p className="mb-6 text-lg text-muted-foreground">
+                  We aim for the Aggressive target. We offer one plan and one quote.
+                </p>
+                <p className="mb-2 text-sm font-medium text-muted-foreground">
+                  Best results with the 3-month plan.
+                </p>
 
-            <div className="mb-8 inline-block rounded-lg bg-primary/10 px-6 py-4">
-              <p className="mb-1 text-sm font-medium text-muted-foreground">Price</p>
-              <p className="text-4xl font-bold text-primary">$1,850</p>
-              <p className="text-lg text-muted-foreground">per month for 3 months</p>
-            </div>
+                <div className="mb-8 inline-block rounded-lg bg-primary/10 px-6 py-4">
+                  <p className="mb-1 text-sm font-medium text-muted-foreground">Price</p>
+                  <p className="text-4xl font-bold text-primary">$1,850</p>
+                  <p className="text-lg text-muted-foreground">per month for 3 months</p>
+                </div>
 
-            <div className="mb-8 text-left">
-              <h3 className="mb-4 text-xl font-semibold">What we do for you</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li className="flex items-start">
-                  <span className="mr-2 text-primary">•</span>
-                  Handle <strong>300 to 500</strong> quality engagements on Reddit and Quora each
-                  month.
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2 text-primary">•</span>
-                  Create <strong>20</strong> blog articles each month.
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2 text-primary">•</span>
-                  Create <strong>5</strong> website category pages each month.
-                </li>
-              </ul>
-              <p className="mt-4 text-sm italic text-muted-foreground">
-                This scope is designed to reach the Aggressive outcome when executed well.
-              </p>
-            </div>
-
-            <Button size="lg" className="text-lg font-semibold">
-              Get Quote
-            </Button>
+                <div className="mb-8 text-left">
+                  <h3 className="mb-4 text-xl font-semibold">What we do for you</h3>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li className="flex items-start">
+                      <span className="mr-2 text-primary">•</span>
+                      <span>Handle <strong>300 to 500</strong> quality engagements on Reddit and Quora each month.</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="mr-2 text-primary">•</span>
+                      <span>Create <strong>20</strong> blog articles each month.</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="mr-2 text-primary">•</span>
+                      <span>Create <strong>5</strong> website category pages each month.</span>
+                    </li>
+                  </ul>
+                  <p className="mt-4 text-sm italic text-muted-foreground">
+                    This scope is designed to reach the Aggressive outcome when executed well.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </Card>
       </div>
