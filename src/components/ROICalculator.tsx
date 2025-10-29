@@ -140,6 +140,11 @@ const ROICalculator = () => {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center">
+          <img
+            src="/logo.avif"
+            alt="Tampon Tribe logo"
+            className="mx-auto mb-4 h-14 w-auto"
+          />
           <h1 className="mb-2 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Tampon Tribe
           </h1>
