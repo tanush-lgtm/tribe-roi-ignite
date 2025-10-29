@@ -30,8 +30,8 @@ interface RampResult {
 
 const ROICalculator = () => {
   const [aov, setAov] = useState(28);
-  const [cr, setCr] = useState(1.5);
-  // Visitors/day today (V0) fixed constant per spec
+  const [cr, setCr] = useState(1.5); // percent, user-editable
+  // Fixed baseline: Visitors/day today (V0)
   const [v0, setV0] = useState(1800);
   const [currentVisibility, setCurrentVisibility] = useState(33);
   const [showQuote, setShowQuote] = useState(false);
@@ -39,8 +39,7 @@ const ROICalculator = () => {
   const PROGRAM_COST = 5550; // $1,850 × 3
   const RAMP_MONTHS = 3;
 
-  // Calculate derived values per provided formulas
-  // V0 is fixed; Orders today O0 = V0 * 30 * CR
+  // Baselines
   const visitorsToday = useMemo(() => v0, [v0]);
   const ordersToday = useMemo(() => visitorsToday * 30 * (cr / 100), [visitorsToday, cr]);
 
@@ -271,8 +270,7 @@ const ROICalculator = () => {
             </table>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Small print: CR held at {cr}%. AOV {formatCurrency(aov)}. Current visibility{" "}
-            {currentVisibility}%.
+            Small print: CR held at {cr}%. AOV {formatCurrency(aov)}. Current visibility {currentVisibility}%.
           </p>
         </Card>
 
