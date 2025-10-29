@@ -31,16 +31,18 @@ interface RampResult {
 const ROICalculator = () => {
   const [aov, setAov] = useState(28);
   const [cr, setCr] = useState(1.5);
-  const [dailyOrders, setDailyOrders] = useState(27);
+  // Visitors/day today (V0) fixed constant per spec
+  const [v0, setV0] = useState(1800);
   const [currentVisibility, setCurrentVisibility] = useState(33);
   const [showQuote, setShowQuote] = useState(false);
 
   const PROGRAM_COST = 5550; // $1,850 × 3
   const RAMP_MONTHS = 3;
 
-  // Calculate derived values
-  const visitorsToday = useMemo(() => dailyOrders / (cr / 100), [dailyOrders, cr]);
-  const ordersToday = useMemo(() => dailyOrders * 30, [dailyOrders]);
+  // Calculate derived values per provided formulas
+  // V0 is fixed; Orders today O0 = V0 * 30 * CR
+  const visitorsToday = useMemo(() => v0, [v0]);
+  const ordersToday = useMemo(() => visitorsToday * 30 * (cr / 100), [visitorsToday, cr]);
 
   // Anchored linear visitors model
   const calculateVisitors = useMemo(() => {
@@ -181,12 +183,12 @@ const ROICalculator = () => {
               />
             </div>
             <div>
-              <Label htmlFor="dailyOrders">Daily Orders Today</Label>
+              <Label htmlFor="v0">Visitors/day today (V0)</Label>
               <Input
-                id="dailyOrders"
+                id="v0"
                 type="number"
-                value={dailyOrders}
-                onChange={(e) => setDailyOrders(Number(e.target.value))}
+                value={v0}
+                onChange={(e) => setV0(Number(e.target.value))}
                 className="mt-2"
               />
             </div>
