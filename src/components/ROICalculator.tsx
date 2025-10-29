@@ -259,7 +259,7 @@ const ROICalculator = () => {
                   <td className="py-3 text-right">{formatNumber(conservative.visitorsPerDay)}</td>
                   <td className="py-3 text-right">{formatNumber(conservative.extraVisitorsPerMonth)}</td>
                   <td className="py-3 text-right">{formatNumber(conservative.extraOrdersPerMonth)}</td>
-                  <td className="py-3 text-right font-semibold text-primary">
+                  <td className="py-3 text-right font-semibold text-green-600">
                     {formatCurrency(conservative.extraRevenuePerMonth)}
                   </td>
                 </tr>
@@ -269,7 +269,7 @@ const ROICalculator = () => {
                   <td className="py-3 text-right">{formatNumber(baseline.visitorsPerDay)}</td>
                   <td className="py-3 text-right">{formatNumber(baseline.extraVisitorsPerMonth)}</td>
                   <td className="py-3 text-right">{formatNumber(baseline.extraOrdersPerMonth)}</td>
-                  <td className="py-3 text-right font-semibold text-primary">
+                  <td className="py-3 text-right font-semibold text-green-600">
                     {formatCurrency(baseline.extraRevenuePerMonth)}
                   </td>
                 </tr>
@@ -279,7 +279,7 @@ const ROICalculator = () => {
                   <td className="py-3 text-right">{formatNumber(aggressive.visitorsPerDay)}</td>
                   <td className="py-3 text-right">{formatNumber(aggressive.extraVisitorsPerMonth)}</td>
                   <td className="py-3 text-right">{formatNumber(aggressive.extraOrdersPerMonth)}</td>
-                  <td className="py-3 text-right font-semibold text-primary">
+                  <td className="py-3 text-right font-semibold text-green-600">
                     {formatCurrency(aggressive.extraRevenuePerMonth)}
                   </td>
                 </tr>
@@ -324,7 +324,7 @@ const ROICalculator = () => {
                       <td className="py-3 text-right">{formatNumber(m.extraVisitorsPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.ordersPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.extraOrders)}</td>
-                      <td className="py-3 text-right font-semibold text-primary">
+                      <td className="py-3 text-right font-semibold text-green-600">
                         {formatCurrency(m.extraRevenue)}
                       </td>
                     </tr>
@@ -332,7 +332,7 @@ const ROICalculator = () => {
                 </tbody>
               </table>
             </div>
-            <p className="mt-4 text-sm font-semibold">
+            <p className="mt-4 text-sm font-semibold text-green-600">
               Total extra revenue in ramp: {formatCurrency(conservativeRamp.totalExtraRevenue)}
             </p>
           </Card>
@@ -362,7 +362,7 @@ const ROICalculator = () => {
                       <td className="py-3 text-right">{formatNumber(m.extraVisitorsPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.ordersPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.extraOrders)}</td>
-                      <td className="py-3 text-right font-semibold text-primary">
+                      <td className="py-3 text-right font-semibold text-green-600">
                         {formatCurrency(m.extraRevenue)}
                       </td>
                     </tr>
@@ -370,7 +370,7 @@ const ROICalculator = () => {
                 </tbody>
               </table>
             </div>
-            <p className="mt-4 text-sm font-semibold">
+            <p className="mt-4 text-sm font-semibold text-green-600">
               Total extra revenue in ramp: {formatCurrency(baselineRamp.totalExtraRevenue)}
             </p>
           </Card>
@@ -400,7 +400,7 @@ const ROICalculator = () => {
                       <td className="py-3 text-right">{formatNumber(m.extraVisitorsPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.ordersPerMonth)}</td>
                       <td className="py-3 text-right">{formatNumber(m.extraOrders)}</td>
-                      <td className="py-3 text-right font-semibold text-primary">
+                      <td className="py-3 text-right font-semibold text-green-600">
                         {formatCurrency(m.extraRevenue)}
                       </td>
                     </tr>
@@ -408,7 +408,7 @@ const ROICalculator = () => {
                 </tbody>
               </table>
             </div>
-            <p className="mt-4 text-sm font-semibold">
+            <p className="mt-4 text-sm font-semibold text-green-600">
               Total extra revenue in ramp: {formatCurrency(aggressiveRamp.totalExtraRevenue)}
             </p>
           </Card>
