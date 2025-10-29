@@ -33,6 +33,8 @@ const ROICalculator = () => {
   const [cr, setCr] = useState(1.5); // percent, user-editable
   // Fixed baseline: Visitors/day today (V0)
   const [v0, setV0] = useState(1800);
+  // Inputtable baseline: Orders/month today (O0)
+  const [o0, setO0] = useState(810);
   const [currentVisibility, setCurrentVisibility] = useState(33);
   const [showQuote, setShowQuote] = useState(false);
 
@@ -41,7 +43,7 @@ const ROICalculator = () => {
 
   // Baselines
   const visitorsToday = useMemo(() => v0, [v0]);
-  const ordersToday = useMemo(() => visitorsToday * 30 * (cr / 100), [visitorsToday, cr]);
+  const ordersToday = useMemo(() => o0, [o0]);
 
   // Anchored linear visitors model
   const calculateVisitors = useMemo(() => {
@@ -188,6 +190,16 @@ const ROICalculator = () => {
                 type="number"
                 value={v0}
                 onChange={(e) => setV0(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div>
+              <Label htmlFor="o0">Orders/month today (O0)</Label>
+              <Input
+                id="o0"
+                type="number"
+                value={o0}
+                onChange={(e) => setO0(Number(e.target.value))}
                 className="mt-2"
               />
             </div>
